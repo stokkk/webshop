@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Index</title>
+</head>
+<body>
+
+<h1>SHOESTORE</h1>
+<p><a href="/admin">Админка</a></p>
+{% for product in products %}
+    <div class="product-cart">
+        <p>Название: {{ product.name }}</p>
+        <p>Брэнд: {{ product.brand_fk.name }}</p>
+        <p>Категория: {{ product.category_fk.name }}</p>
+        <p>Цена: {{ product.reg_price }}</p>
+        <p>Скидка: {{ product.sale_price }}</p>
+
+        {% if product.photo_fk.photoBin %}
+        <p><img width="400px" height="400px" src="{{product.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}"></p>
+        {% else %}
+        <p><img width="400px" height="400px" src="{{product.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}"></p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+</body>
+</html>

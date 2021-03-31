@@ -1,4 +1,8 @@
 env/
 .vscode/
+*.jpg
+*.png
 *.db
+*.webp
 */__pycache__/
+/main/migrations/
