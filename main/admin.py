@@ -10,6 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Brand)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductPhoto)
+admin.site.register(Photo)
 admin.site.register(Categories)
 admin.site.register(Attributes)
 admin.site.register(AttributeAndCategory)

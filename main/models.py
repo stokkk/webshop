@@ -21,29 +21,36 @@ class Attributes(models.Model):
     slug = models.CharField(max_length=50)
     attribute_type = models.CharField(max_length=50)
     def __str__(self):
-        return self.slug.__str__()
+        return self.slug.__str__()  
 
 
 class AttributeAndCategory(models.Model):
     category_fk = models.ForeignKey(Categories, on_delete=models.CASCADE)
     attribute_fk = models.ForeignKey(Attributes, on_delete=models.CASCADE)
-
+    def __str__(self):
+        return "{0} -> {1}".format(self.category_fk.name, self.attribute_fk.slug)
 
 class Values(models.Model):
     value = models.CharField(max_length=200)
     slug = models.CharField(max_length=50)
     attribute_fk = models.ForeignKey(Attributes, on_delete=models.CASCADE)
     def __str__(self):
-        return self.slug.__str__() 
+        return "<Values: {0}>".format(self.slug)
+
+
+class Photo(models.Model):
+    photoUrl = models.CharField(max_length=255, blank=True, null=True)
+    photoBin = models.ImageField(upload_to='images/', blank=True, null=True)
+    photoName = models.CharField(max_length=100, default="No Image")
+    def __str__(self):
+        return self.photoName.__str__()
 
 
 class ProductPhoto(models.Model):
-    photoUrl = models.CharField(max_length=255, blank=True, null=True)
-    photoBin = models.ImageField(upload_to='images/', blank=True, null=True)
-    photoName = models.CharField(max_length=100, default="No Image.")
-    # product_fk = models.ForeignKey(Product, on_delete=models.CASCADE, default=None)
+    product_fk = models.ForeignKey('Product', on_delete=models.CASCADE, default=None)
+    photo_fk = models.ForeignKey('Photo', on_delete=models.CASCADE, default=None)
     def __str__(self):
-        return self.photoName.__str__()
+        return self.id
 
 
 class Product(models.Model):
@@ -56,7 +63,6 @@ class Product(models.Model):
     sex = models.CharField(max_length=20)
     season = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
-    photo_fk = models.ManyToManyField(ProductPhoto)
     def __str__(self):
         return self.name.__str__()
         
@@ -64,4 +70,6 @@ class Product(models.Model):
 class ProductValue(models.Model):
     product_fk = models.ForeignKey(Product, on_delete=models.CASCADE)
     value_fk = models.ForeignKey(Values, on_delete=models.CASCADE)
+    def __str__(self):
+        return "<ProductValue: {0}, {1}>".format(self.product_fk, self.value_fk.value)
 

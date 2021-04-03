@@ -8,19 +8,31 @@
 
 <h1>SHOESTORE</h1>
 <p><a href="/admin">Админка</a></p>
+
 {% for product in products %}
     <div class="product-cart">
-        <p>Название: {{ product.name }}</p>
-        <p>Брэнд: {{ product.brand_fk.name }}</p>
-        <p>Категория: {{ product.category_fk.name }}</p>
-        <p>Цена: {{ product.reg_price }}</p>
-        <p>Скидка: {{ product.sale_price }}</p>
+        
+        {% for photo in product.productphoto_set.all %}
+            {% if photo.photo_fk.photoBin %}
+            <img src="{{photo.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}">
+            {% elif photo_photo_fk.photoUrl %}
+            <img src="{{photo.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}">
+            {% else %}
+            <img src="media/images/no_img.jpg" alt="No image">
+            {% endif %}
+        {% endfor %}
 
-        {% if product.photo_fk.photoBin %}
-        <p><img width="400px" height="400px" src="{{product.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}"></p>
+        <h3>Описание</h3>
+        <p><a href="{{product.pk}}/detail">{{ product.name }}</a></p>
+        <p style="color: lightblue">{{ product.brand_fk.name }}</p>
+        <p>{{ product.category_fk.name }}</p>
+        {% if product_sale_price %}
+        <p>{{ product.sale_price }} $</p>
+        <p><s>{{ product.reg_price }} $</s></p>
         {% else %}
-        <p><img width="400px" height="400px" src="{{product.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}"></p>
+        <p>{{ product.reg_price }} $</p>
         {% endif %}
+        <hr>
     </div>
 {% endfor %}
 

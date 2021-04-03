@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{product.name}}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
+   
+</head>
+<body> 
+
+    <h1>Product detail</h1>      
+    {% for photo in product.productphoto_set.all %}
+        {% if photo.photo_fk.photoBin %}
+        <img src="{{photo.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}">
+        {% elif photo_photo_fk.photoUrl %}
+        <img src="{{photo.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}">
+        {% else %}
+        <img src="/media/images/no_img.jpg" alt="No image">
+        {% endif %}
+    {% endfor %}
+            
+
+        <h3>Описание</h3>
+        <p>{{ product.name }}</p>
+        <p style="color: lightblue">{{ product.brand_fk.name }}</p>
+        <p>{{ product.category_fk.name }}</p>
+        {% if product_sale_price %}
+        <p>{{ product.sale_price }} $</p>
+        <p><s>{{ product.reg_price }} $</s></p>
+        {% else %}
+        <p>{{ product.reg_price }} $</p>
+        {% endif %}
+        <h3>Атрибуты</h3>
+        {% for attribute in category_attributes %} 
+            <b>{{ attribute.title }}</b>
+            <ul>
+                {% for value in product_values %} 
+                    {% if value.attribute_fk_id == attribute.id %}
+                    <li>{{value.value}}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endfor %}
+        <hr>
+        <!-- <script src="{% static 'main/slider.js' %}"></script>  -->
+        
+</body>
+</html>
