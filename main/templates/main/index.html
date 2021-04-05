@@ -11,21 +11,25 @@
 
 {% for product in products %}
     <div class="product-cart">
-        
-        {% for photo in product.productphoto_set.all %}
-            {% if photo.photo_fk.photoBin %}
-            <img src="{{photo.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}">
-            {% elif photo_photo_fk.photoUrl %}
-            <img src="{{photo.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}">
-            {% else %}
-            <img src="media/images/no_img.jpg" alt="No image">
-            {% endif %}
-        {% endfor %}
+
+        <h1><a href="{{product.pk}}/detail">{{ product.name }}</a></h1>
+
+        {% if product.productphoto_set.all|length %}
+            {% for photo in product.productphoto_set.all %}
+                {% if photo.photo.photoBin %}
+                <img src="{{photo.photo.photoBin.url}}" alt="{{product.photo.photoName}}">
+                {% elif photo.photo.photoUrl %}
+                <img src="{{photo.photo.photoUrl}}" alt="{{product.photo.photoName}}">
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        <img src="media/images/no_img.jpg" alt="No image">
+        {% endif %}
 
         <h3>Описание</h3>
-        <p><a href="{{product.pk}}/detail">{{ product.name }}</a></p>
-        <p style="color: lightblue">{{ product.brand_fk.name }}</p>
-        <p>{{ product.category_fk.name }}</p>
+        
+        <p style="color: lightblue">{{ product.brand.name }}</p>
+        <p>{{ product.category.name }}</p>
         {% if product_sale_price %}
         <p>{{ product.sale_price }} $</p>
         <p><s>{{ product.reg_price }} $</s></p>

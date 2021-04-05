@@ -11,12 +11,12 @@
 </head>
 <body> 
 
-    <h1>Product detail</h1>      
+    <h1>{{ product.name }}</h1>      
     {% for photo in product.productphoto_set.all %}
-        {% if photo.photo_fk.photoBin %}
-        <img src="{{photo.photo_fk.photoBin.url}}" alt="{{product.photo_fk.photoName}}">
+        {% if photo.photo.photoBin %}
+        <img src="{{photo.photo.photoBin.url}}" alt="{{product.photo.photoName}}">
         {% elif photo_photo_fk.photoUrl %}
-        <img src="{{photo.photo_fk.photoUrl}}" alt="{{product.photo_fk.photoName}}">
+        <img src="{{photo.photo.photoUrl}}" alt="{{product.photo.photoName}}">
         {% else %}
         <img src="/media/images/no_img.jpg" alt="No image">
         {% endif %}
@@ -24,9 +24,9 @@
             
 
         <h3>Описание</h3>
-        <p>{{ product.name }}</p>
-        <p style="color: lightblue">{{ product.brand_fk.name }}</p>
-        <p>{{ product.category_fk.name }}</p>
+        
+        <p style="color: lightblue">{{ product.brand.name }}</p>
+        <p>{{ product.category.name }}</p>
         {% if product_sale_price %}
         <p>{{ product.sale_price }} $</p>
         <p><s>{{ product.reg_price }} $</s></p>
@@ -38,7 +38,7 @@
             <b>{{ attribute.title }}</b>
             <ul>
                 {% for value in product_values %} 
-                    {% if value.attribute_fk_id == attribute.id %}
+                    {% if value.attribute_id == attribute.id %}
                     <li>{{value.value}}</li>
                     {% endif %}
                 {% endfor %}
