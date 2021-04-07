@@ -16,6 +16,7 @@ class Categories(models.Model):
     def __str__(self):
         return self.name.__str__()
 
+
 class Attributes(models.Model):
     title = models.CharField(max_length=50)
     slug = models.CharField(max_length=50)
@@ -28,7 +29,8 @@ class AttributeAndCategory(models.Model):
     category= models.ForeignKey(Categories, on_delete=models.CASCADE)
     attribute = models.ForeignKey(Attributes, on_delete=models.CASCADE)
     def __str__(self):
-        return "{0} -> {1}".format(self.category_fk.name, self.attribute_fk.slug)
+        return "{0} -> {1}".format(self.category.name, self.attribute.slug)
+
 
 class Values(models.Model):
     value = models.CharField(max_length=200)
@@ -50,7 +52,7 @@ class ProductPhoto(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE, default=None)
     photo = models.ForeignKey('Photo', on_delete=models.CASCADE, default=None)
     def __str__(self):
-        return self.id.__str__()
+        return "{0} - {1}".format(self.product.name,self.photo.photoName)
 
 
 class Product(models.Model):
