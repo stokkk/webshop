@@ -1,44 +1,183 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Index</title>
-</head>
-<body>
+{% extends 'main/home.html' %}
+{% load static %}
+{% load mainutils %}
 
-<h1>SHOESTORE</h1>
-<p><a href="/admin">Админка</a></p>
+{% block slide-content %}
+        <!-- content -->
+        <div class="slide v3">
+            <div class="js-slider-v4">
+                <div class="slide-img">
+                    <img src="{% static 'img/background.jpeg' %}" alt="" class="img-responsive">
+                    <div class="box-center content2">
+                        <h3>Anna Collection</h3>
+                        <a href="" class="slide-btn">Shop Now</a>
+                    </div>
+                </div>
+                <div class="slide-img">
+                    <img src="{% static 'img/slide/slider-1-home-1.png  ' %}" alt="" class="img-responsive">
+                    <div class="box-center content1">
+                        
+                    </div>
+                </div>
+                
+            </div>
+           <div class="custom">
+                <div class="pagingInfo"></div>
+            </div>
+        </div>
+        <!-- End content -->
+{% endblock slide-content %}
 
-{% for product in products %}
-    <div class="product-cart">
+{% block trend-product %}  
+    <div class="trend-product pad">
+    <div class="container container-content">
+        <div class="row first">
+            <!-- TREND BRAND -->
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                <div class="trend-img hover-images">
+                    
+                        <img class="img-responsive" src="{% static 'img/home1/trend.png' %}" alt="">
+                    
+                    <div class="box-center align-items-end">
+                        <h3 class="zoa-category-box-title">
+                            <a href="#">#trend</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
 
-        <h1><a href="{{product.pk}}/detail">{{ product.name }}</a></h1>
-
-        {% if product.productphoto_set.all|length %}
-            {% for photo in product.productphoto_set.all %}
-                {% if photo.photo.photoBin %}
-                <img src="{{photo.photo.photoBin.url}}" alt="{{product.photo.photoName}}">
-                {% elif photo.photo.photoUrl %}
-                <img src="{{photo.photo.photoUrl}}" alt="{{product.photo.photoName}}">
-                {% endif %}
-            {% endfor %}
-        {% else %}
-        <img src="media/images/no_img.jpg" alt="No image">
-        {% endif %}
-
-        <h3>Описание</h3>
-        
-        <p style="color: lightblue">{{ product.brand.name }}</p>
-        <p>{{ product.category.name }}</p>
-        {% if product_sale_price %}
-        <p>{{ product.sale_price }} $</p>
-        <p><s>{{ product.reg_price }} $</s></p>
-        {% else %}
-        <p>{{ product.reg_price }} $</p>
-        {% endif %}
-        <hr>
+            <div class="col-md-7 col-sm-6 col-xs-12">
+                <div class="row engoc-row-equal">
+                    {% for product in products|slice:":6" %}
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 product-item">
+                        <div class="product-img">
+                            {% for photo in product.productphoto_set.all|slice:":1" %}
+                                {% if photo.photo.photoBin %}
+                                <a href="{{product.id}}/detail"><img src="{{ photo.photo.photoBin.url}}" alt="" class="img-responsive"></a>
+                                {% elif photo.photo.photoUrl %}
+                                <a href="{{product.id}}/detail"><img src="{{ photo.photo.photoUrl}}" alt="" class="img-responsive"></a>
+                                {% else %}
+                                <a href="{{product.id}}/detail"><img src="/media/images/no_img.jpg" alt="" class="img-responsive"></a>
+                                {% endif %}
+                            {% endfor %}
+                            {% if product.sale_size %} 
+                            <div class="ribbon zoa-sale"><span>-{{product.sale_size}}%</span></div>
+                            {% endif %}
+                            <div class="product-button-group">
+                                <a href="#" class="zoa-btn zoa-quickview">
+                            <span class="zoa-icon-quick-view"></span>
+                        </a>
+                                <a href="#" class="zoa-btn zoa-wishlist">
+                            <span class="zoa-icon-heart"></span>
+                        </a>
+                                <a href="#" class="zoa-btn zoa-addcart">
+                            <span class="zoa-icon-cart"></span>
+                        </a>
+                            </div>
+                        </div>
+                        <div class="product-info text-center">
+                            <h3 class="product-title">
+                                <a href="">{{product.product.name}}</a>
+                            </h3>
+                            <div class="product-price">
+                                {% if product.sale_size %}
+                                <span class="old">${{product.reg_price}}</span>
+                                <span>${{ product.reg_price|calcprice:product.sale_size }}</span>
+                                {% else %}
+                                <span>${{product.reg_price}}</span>
+                                {% endif %}
+                                
+                            </div>
+                            <div class="color-group">
+                                <a href="#" class="circle gray"></a>
+                                <a href="#" class="circle yellow active"></a>
+                                <a href="#" class="circle white"></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-{% endfor %}
+</div>
+{% endblock trend-product %}                    <!-- END BLOCK TREND-PRODUCT -->
 
-</body>
-</html>
+{% block single-banner %}
+<div class="single-banner">
+    <div class="container container-content">
+        <div class="banner-img hover-images">
+            <img src="{% static 'img/home1/home-1-bg.png' %}" alt="" class="img-responsive">
+        
+            <div class="box-center">
+                <div class="content">
+                    <a class="text" href="">#spring collect</a>
+                    <h2>-50%</h2>
+                    <a href="#" class="zoa-btn btn-shopnow">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock single-banner %}
+
+{% block container-info %}
+<div class="container">
+    <div class="policy pad bd-top">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-3 policy-item">
+                <div class="policy-icon"><img src="{% static 'img/policy/icon_1.png' %}" alt=""></div>
+                <div class="policy-content">
+                    <h3>Free shipping</h3>
+                    <p>on all orders over $49.00</p>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 policy-item">
+                <div class="policy-icon"><img src="{% static 'img/policy/icon_2.png' %}" alt=""></div>
+                <div class="policy-content">
+                    <h3>15 days returns</h3>
+                    <p>moneyback guarantee</p>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 policy-item">
+                <div class="policy-icon"><img src="{% static 'img/policy/icon_3.png' %}" alt=""></div>
+                <div class="policy-content">
+                    <h3>Secure checkout</h3>
+                    <p>100% protected by Paypal</p>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 policy-item">
+                <div class="policy-icon"><img src="{% static 'img/policy/icon_4.png' %}" alt=""></div>
+                <div class="policy-content">
+                    <h3>100% free warranty</h3>
+                    <p>moneyback guarantee</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock container-info %}
+
+{% block newsletter %}
+<div class="newsletter">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                <div class="newsletter-heading">
+                    <h3>get in touch</h3>
+                    <p>Subscribe for latest stories and promotions (35% sale)</p>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-6 col-xs-12 flex-end">
+                <form class="form_newsletter" action="#" method="post">
+                    <input type="email" value="" placeholder="Enter your emaill" name="EMAIL" id="mail" class="newsletter-input form-control">
+                    <button id="subscribe" class="button_mini zoa-btn" type="submit">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock newsletter %}
+

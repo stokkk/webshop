@@ -1,51 +1,216 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{product.name}}</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'main/style.css' %}">
-   
-</head>
-<body> 
+{% extends 'main/base_template.html' %}
+{% load mainutils %}
 
-    <h1>{{ product.name }}</h1>      
-    {% for photo in product.productphoto_set.all %}
-        {% if photo.photo.photoBin %}
-        <img src="{{photo.photo.photoBin.url}}" alt="{{product.photo.photoName}}">
-        {% elif photo_photo_fk.photoUrl %}
-        <img src="{{photo.photo.photoUrl}}" alt="{{product.photo.photoName}}">
-        {% else %}
-        <img src="/media/images/no_img.jpg" alt="No image">
-        {% endif %}
-    {% endfor %}
-            
+{% block content %}
+<div class="container container-content">
+    <div class="single-product-detail">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="flex product-img-slide">
+                    <div class="product-images">
+                        <div class="ribbon zoa-sale"><span>-15%</span></div>
+                        <div class="main-img js-product-slider">
+                            {% if main_photo %}
+                                {% if main_photo.photo.photoBin %}
+                                <a href="#" class="hover-images effect"><img src="{{main_photo.photo.photoBin.url}}" alt="photo" class="img-responsive"></a>
+                                {% elif main_photo.photo.photoUrl %}
+                                <a href="#" class="hover-images effect"><img src="{{main_photo.photo.photoUrl}}" alt="photo" class="img-responsive">
+                                {% else %}
+                                <a href="#" class="hover-images effect"><img src="/media/images/no_img.jpg" alt="photo" class="img-responsive"></a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="multiple-img-list-ver2 js-click-product">        
+                        {% for photo in other_photos %}
+                            <div class="product-col">
+                                <div class="img">
+                                    {% if photo.photo.photoBin %}
+                                    <img src="{{photo.photo.photoBin.url}}" alt="images" class="img-responsive">
+                                    {% elif photo.photo.photoUrl %}
+                                    <img src="{{photo.photo.photoUrl}}" alt="images" class="img-responsive">
+                                    {% else %}
+                                    <img src="/media/images/no_img.jpg" alt="images" class="img-responsive">
+                                    {% endif %}
+                                </div>       
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="single-product-info product-info product-grid-v2">
+                    <h3 class="product-title"><a href="#">{{product.product.name}}</a></h3>
+                    <div class="product-price">
+                        {% if product.sale_size %}
+                        <span class="old thin">${{product.reg_price}}</span>
+                        <span>${{product.reg_price|calcprice:product.sale_size}}</span>
+                        {% else %} 
+                        <span>${{product.reg_price}}</span>
+                        {% endif %}
+                    </div>
+                    <div class="flex product-rating">
+                        <div class="group-star">
+                            <span class="star star-5"></span>
+                            <span class="star star-4"></span>
+                            <span class="star star-3"></span>
+                            <span class="star star-2"></span>
+                            <span class="star star-1"></span>
+                        </div>
+                        <div class="number-rating">( 02 reviews )</div>
+                    </div>
+                    <div class="short-desc">
+                        <p class="product-desc">{{product.product.description}}</p>
+                    </div>
+                    <div class="color-group">
+                        <label>Color :</label>
+                        <a href="#" class="circle gray"></a>
+                        <a href="#" class="circle active yellow"></a>
+                        <a href="#" class="circle white"></a>
+                    </div>
+                    {% for attribute in category_attributes %}
+                    <div class="product-size">
+                        <div class="size-group">
+                            <label>{{attribute.title}} :</label>
+                            <select class="single-option-selector" data-option="option1" id="productSelect-option-0">
+                                {% for value in product.product.values_set.all %}
+                                <option value="{{value.value}}">{{value.value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <a href="" class="size-guide">Size guide</a>
+                    </div>
+                    {% endfor %}
+                    <div class="single-product-button-group">
+                        <div class="flex align-items-center element-button">
+                            <div class="zoa-qtt">
+                                <button type="button" class="quantity-left-minus btn btn-number js-minus" data-type="minus" data-field="">
+                                </button>
+                                <input type="text" name="number" value="1" class="product_quantity_number js-number">
+                                <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
+                                </button>
+                            </div>
+                            <a href="" class="zoa-btn zoa-addcart">
+                                    <i class="zoa-icon-cart"></i>add to cart
+                                </a>
+                        </div>
+                        <a href="" class="btn-wishlist">+ Add to wishlist</a>
+                    </div>
+                    <div class="product-tags">
+                        <div class="element-tag">
+                            <label>SKU :</label>
+                            <span>{{product.sku}}</span>
+                        </div>
+                        <div class="element-tag">
+                            <label>Categories :</label>
+                            <a href="#">All,</a>
+                            <a href="#">Shirts,</a>
+                            <a href="#">Featured</a>
+                        </div>
+                        <div class="element-tag">
+                            <label>Tags :</label>
+                            <a href="#">Back,</a>
+                            <a href="#">Blue,</a>
+                            <a href="#">new,</a>
+                            <a href="#">£0.00 - £150.00</a>
+                        </div>
+                    </div>
+                    <div class="product-social">
+                        <label>Share +</label>
+                        <div class="social">
+                            <a href=""><i class="fa fa-facebook"></i></a>
+                            <a href=""><i class="fa fa-twitter"></i></a>
+                            <a href=""><i class="fa fa-instagram"></i></a>
+                            <a href=""><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="single-product-tab bd-bottom">
+        <ul class="tabs text-center">
+            <li><a data-toggle="pill" href="#desc">Description</a></li>
+            <li class="active"><a data-toggle="pill" href="#review">Reviews <span class="review-number">2</span></a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="desc" class="tab-pane fade in ">
+                <div class="content-desc text-center">
+                    <p>
+                        Add a British twist to your wardrobe with the Erika skirt in seersucker. Pinstripe pattern. 2 patched front pockets. Waist tie belt with loops. Button detailing on the front. Integrated cotton lining.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    </p>
+                </div>
+            </div>
+            <div id="review" class="tab-pane fade in active ">
+                <ul class="review-content">
+                    <li class="element-review">
+                        <p class="r-name">Felix Nguyen</p>
+                        <p class="r-date">25, March 2018</p>
+                        <div class="group-star">
+                            <span class="star star-5"></span>
+                            <span class="star star-4"></span>
+                            <span class="star star-3"></span>
+                            <span class="star star-2"></span>
+                            <span class="star star-1"></span>
+                        </div>
+                        <p class="r-desc">
+                            Free shipping on orders over 150€ within Europe and North America. Place your order today and receive it within 48 hours. And now, free and easy returns within Europe.
+                        </p>
+                    </li>
+                    <li class="element-review">
+                        <p class="r-name">Felix Nguyen</p>
+                        <p class="r-date">25, March 2018</p>
+                        <div class="group-star">
+                            <span class="star star-5"></span>
+                            <span class="star star-4"></span>
+                            <span class="star star-3"></span>
+                            <span class="star star-2"></span>
+                            <span class="star star-1"></span>
+                        </div>
+                        <p class="r-desc">
+                            Free shipping on orders over 150€ within Europe and North America. Place your order today and receive it within 48 hours. And now, free and easy returns within Europe.
+                        </p>
+                    </li>
+                </ul>
+                <div class="review-form">
+                    <h3 class="review-heading">Your Rating</h3>
+                    <div class="rating-star">
+                        <span class="fa fa-star-o" aria-hidden="true"></span>
+                        <span class="fa fa-star-o" aria-hidden="true"></span>
+                        <span class="fa fa-star-o" aria-hidden="true"></span>
+                        <span class="fa fa-star-o" aria-hidden="true"></span>
+                        <span class="fa fa-star-o" aria-hidden="true"></span>
+                    </div>
+                    <div class="cmt-form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="name" class="form-control" name="comment[name]" value="" placeholder="Name *">
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="email" id="email" class="form-control" name="comment[email]" value="" placeholder="Phone Number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea id="message" class="form-control" name="comment[body]" rows="9" placeholder="Your reviews"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="zoa-btn">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <h3>Описание</h3>
-        
-        <p style="color: lightblue">{{ product.brand.name }}</p>
-        <p>{{ product.category.name }}</p>
-        {% if product_sale_price %}
-        <p>{{ product.sale_price }} $</p>
-        <p><s>{{ product.reg_price }} $</s></p>
-        {% else %}
-        <p>{{ product.reg_price }} $</p>
-        {% endif %}
-        <h3>Атрибуты</h3>
-        {% for attribute in category_attributes %} 
-            <b>{{ attribute.title }}</b>
-            <ul>
-                {% for value in product_values %} 
-                    {% if value.attribute_id == attribute.id %}
-                    <li>{{value.value}}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% endfor %}
-        <hr>
-        <!-- <script src="{% static 'main/slider.js' %}"></script>  -->
-        
-</body>
-</html>
+{% endblock content %}
