@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col col-sm-4 justify-content-center">
-                    <p>Summer sale discount off 50%! <a href="">Shop Now</a></p>
+                    <p><b>Внимание!</b> Это демонстративный сайт.</p>
                 </div>
                 <div class="col col-sm-4 justify-content-end">
                     <div class="topbar-right">
@@ -220,7 +220,7 @@ S22.2,69.3,15.9,63C9.5,56.8,6,48.4,6,39.4s3.5-17.3,9.8-23.6S30.5,6,39.4,6S56.8,9
                             </a>
                         </div>
                         <div class="element element-user hidden-xs hidden-sm">
-                            <a href="#" class="zoa-icon js-user">
+                            <a href="{% url 'account' %}" class="zoa-icon js-user">
                                 <svg width="19" height="20" version="1.1" id="Layer_3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 102.8" style="enable-background:new 0 0 100 102.8;" xml:space="preserve">
                                     <g>
                                         <path d="M75.7,52.4c-2.1,2.3-4.4,4.3-7,6C82.2,58.8,93,69.9,93,83.5v12.3H7V83.5c0-13.6,10.8-24.7,24.3-25.1c-2.6-1.7-5-3.7-7-6
@@ -233,6 +233,7 @@ C10.3,55.9,0,68.5,0,83.5v15.8c0,1.9,1.6,3.5,3.5,3.5h93c1.9,0,3.5-1.6,3.5-3.5V83.
                                 </svg>
                             </a>
                         </div>
+                        {% if user.is_authenticated %} 
                         <div class="element element-cart">
                             <a href="#" class="zoa-icon icon-cart">
                                 <svg width="20" height="20" version="1.1" id="Layer_4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55.4 55.4" style="enable-background:new 0 0 55.4 55.4;" xml:space="preserve">
@@ -256,10 +257,13 @@ z" />
                                 <span class="count cart-count">0</span>
                             </a>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+
 {% endblock header %}
+

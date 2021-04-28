@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block wrapp %} 
+{% block links %}
+<link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/png">
+<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/slick.css' %}">
+<link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock links %}
+{% block registration %}
+<div class="container h-100">
+    <div id="register" class="tab-pane fade in active">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-md-4">
+                <form method="post" class="form-customer form-login" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label}}">E-mail</label>
+                        {{form.email}}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{form.login.id_for_label}}">Username</label>
+                        {{form.login}}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{form.password.id_for_label}}">Password</label>
+                        {{form.password}}
+                    </div>
+                    <div class="btn-button-group mg-top-30 mg-bottom-15">
+                        <button type="submit" class="zoa-btn btn-login hover-white">Sign Up</button>
+                    </div>
+                </form>
+                <div class="social-group-button">
+                    <a href="" class="twitter button">
+                        <div class="slide">
+                            <p>
+                                Connect with Twitter
+                            </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-twitter">
+                    </i>
+                        </div>
+                    </a>
+                    <a href="" class="facebook button">
+                        <div class="slide">
+                            <p>
+                                Connect with Facebook
+                            </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-facebook">
+                    </i>
+                        </div>
+                    </a>
+                </div>
+                <span class="text-note">Already have an account? <a href="{% url 'login' %}">Sign In!</a></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Registration -->
+{% endblock registration %}
+{% endblock wrapp %}

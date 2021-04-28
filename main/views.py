@@ -1,31 +1,24 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
 
 from operator import attrgetter
+from .services import ServiceMain
+
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
+
+
 # Create your views here.
 
 app_name = 'main'
 
 def index(request):
     products = ProductVar.objects.all()
-    context = {'products': products}
+    context = {'products': products, 'user': request.user}
     return render(request, 'main/index.html', context)
 
 
 def product_detail(request, pk):
-    product = get_object_or_404(ProductVar, pk=pk)      # Объект товара
-    group_products = ProductVar.objects.filter(group_id=product.group_id)
-    attrs = map(attrgetter('attribute'),            # атрибуты товара. Класс - Attributes
-        AttributeAndCategory.objects.filter(category=product.product.category_id)
-    )
-    photos = product.productphoto_set.all()
-    main_photo, other_photos = (photos[0], photos[1:]) if len(photos) >= 1 else (None, [])
-    context = {
-        'product': product,
-        'category_attributes': attrs,
-        'group_products': group_products,
-        'main_photo': main_photo,
-        'other_photos': other_photos
-    }
+    context = ServiceMain.product_detail_context(request, pk=pk)
     return render(request, 'main/product_detail.html', context)

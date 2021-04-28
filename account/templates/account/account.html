@@ -1,0 +1,192 @@
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% block content %} 
+
+{% block pushcart %}
+    <!-- Push cart -->
+    <div class="pushmenu pushmenu-left cart-box-container">
+        <div class="cart-list">
+            <div class="cart-list-heading">
+                <h3 class="cart-title">My cart</h3>
+                <span class="close-left js-close"><i class="ion-ios-close-empty"></i></span>
+            </div>
+            <div class="cart-inside">
+                <ul class="list">
+                    <li class="item-cart">
+                        <div class="product-img-wrap">
+                            <a href="#" title="Product"><img src="{% static 'img/product/cart_product_1.jpg' %}" alt="Product" class="img-responsive"></a>
+                        </div>
+                        <div class="product-details">
+                            <div class="inner-left">
+                                <div class="product-name"><a href="#">Grosgrain tie cotton top</a></div>
+                                <div class="product-price"><span>$20.9</span></div>
+                                <div class="cart-qtt">
+                                    <button type="button" class="quantity-left-minus btn btn-number js-minus" data-type="minus" data-field="">
+                                        <span class="minus-icon"><i class="ion-ios-minus-empty"></i></span>
+                                    </button>
+                                    <input type="text" name="number" value="1" class="product_quantity_number js-number">
+                                    <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
+                                        <span class="plus-icon"><i class="ion-ios-plus-empty"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-cart">
+                        <div class="product-img-wrap">
+                            <a href="#" title="Product"><img src="{% static 'img/product/cart_product_2.jpg' %}" alt="Product" class="img-responsive"></a>
+                        </div>
+                        <div class="product-details">
+                            <div class="inner-left">
+                                <div class="product-name"><a href="#">Grosgrain tie cotton top</a></div>
+                                <div class="product-price"><span>$20.9</span></div>
+                                <div class="cart-qtt">
+                                    <button type="button" class="quantity-left-minus btn btn-number js-minus" data-type="minus" data-field="">
+                                        <span class="minus-icon"><i class="ion-ios-minus-empty"></i></span>
+                                    </button>
+                                    <input type="text" name="number" value="1" class="product_quantity_number js-number">
+                                    <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
+                                        <span class="plus-icon"><i class="ion-ios-plus-empty"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="cart-bottom">
+                    <div class="cart-form">
+                        <div class="cart-note-form">
+                            <label for="CartSpecialInstructions" class="cart-note cart-note_text_label small--text-center">Special Offer:</label>
+                            <textarea rows="6" name="note" id="CartSpecialInstructions" class="cart-note__input form-control note--input"></textarea>
+                        </div>
+                    </div>
+                    <div class="cart-button mg-top-30">
+                        <a class="zoa-btn checkout" href="#" title="">Check out</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End cart bottom -->
+        </div>
+    </div>
+    <!-- End pushcart -->
+{% endblock pushcart %}
+
+
+{% block myaccount %}
+<div class="my-account">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4 howday">
+                <div class="titlelt">
+                    <h2>Приветсвую <strong>{{user.username}}</strong></h2>
+                    <div class="address">
+                        <ul class="nav ">
+                            <li><a href="#"><img src="{% static 'img/Icon_User.jpg' %}" alt=""> Account detail</a></li>
+                            <li><a href="#"><img src="{% static 'img/Icon_Add.jpg' %}" alt=""> Adderesses</a></li>
+                            <li><a href="#"><img src="{% static 'img/Icon_Listing.jpg' %}" alt=""> My orders</a></li>
+                            <li><a href="#"><img src="{% static 'img/Icon_Upload.jpg' %}" alt=""> Download</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="login">
+                        <ul class="nav ">
+                            <li><a href="#"><img src="{% static 'img/Icon_Lock.jpg' %}" alt="Icon_User.jpg"> change password</a></li>
+                            <li><a href="{% url 'logout' %}"><img src="{% static 'img/Icon_Off.jpg' %}" alt="Icon_User.jpg"> log out</a></li>
+                        </ul>
+                    </div>  
+
+                </div> 
+            </div>
+            <div class="col-md-8 col-sm-8 porfolio">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#home">Billing Adress</a></li>
+                    <li><a href="#menu1">Shipping Address</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="form">
+                            <form action="#" method="post">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                            <label>Country</label><br>
+                                        <input type="text" name="country" placeholder="Việt Nam" required class="country">
+                                        </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label>City /state</label><br>
+                                            <input type="text" name="city" placeholder="Hà nội" required class="city">
+                                        </div>
+                                </div>
+                                <label>Street address</label>
+                                <input type="text" name="city" placeholder="no1, trang tien, hoan kiem district" required class="city">
+                                    <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                            <label>ZIP</label><br>
+                                        <input type="text" name="country" placeholder="12345" required class="zipcode">
+                                        </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label>phone</label><br>
+                                        <input type="text" name="city" placeholder="+84 0123456789" required class="phone">
+                                        </div>
+                                    </div>
+                                <label class="mail">email</label><br>
+                                <input type="text" name="city" placeholder="felixdg@gmail.com" required class="gmail">
+                                <button class="change">Save change</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="form">
+                            <form action="#" method="post">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                            <label>Country</label><br>
+                                        <input type="text" name="country" placeholder="Việt Nam" required class="country">
+                                        </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label>City /state</label><br>
+                                        <input type="text" name="city" placeholder="Hà nội" required class="city">
+                                    </div>
+                                </div>
+                                <label>Street address</label>
+                                <input type="text" name="city" placeholder="no1, trang tien, hoan kiem district" required class="city">
+                                    <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                            <label>ZIP</label><br>
+                                        <input type="text" name="country" placeholder="12345" required class="zipcode">
+                                        </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label>phone</label><br>
+                                        <input type="text" name="city" placeholder="+84 0123456789" required class="phone">
+                                        </div>
+                                    </div>
+                                <label class="mail">email</label><br>
+                                <input type="text" name="city" placeholder="felixdg@gmail.com" required class="gmail">
+                                <button class="change">Save change</button>
+                            </form>
+                        </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock myaccount %}
+
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $(".nav-tabs a").click(function(){
+            $(this).tab('show');
+        });
+        $('.nav-tabs a').on('shown.bs.tab', function(event){
+            var x = $(event.target).text();         // active tab
+            var y = $(event.relatedTarget).text();  // previous tab
+            $(".act span").text(x);
+            $(".prev span").text(y);
+        });
+    });
+</script>
+{% endblock scripts %}
+       
+{% endblock content %}

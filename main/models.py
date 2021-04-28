@@ -93,6 +93,7 @@ class ProductVar(models.Model):
     sale_size = models.IntegerField(default=None, blank=True, null=True)
     count = models.IntegerField(default=0) # количество товаров с таким значением атрибута
     group_id = models.PositiveIntegerField(default=None, blank=True, null=True)
+    short_description = models.CharField(max_length=200, blank=True, null=True)
     def __str__(self):
         return "id={0}, value={1}".format(self.id, self.value.value)
     
