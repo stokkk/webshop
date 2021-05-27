@@ -1,40 +1,29 @@
 {% extends 'main/base_template.html' %}
 {% load mainutils %}
-
+{% block title %}{{product.brand}} {{product.name}}{% endblock %}
 {% block content %}
+
 <div class="container container-content">
     <div class="single-product-detail">
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="flex product-img-slide">
                     <div class="product-images">
-                        {% if productDetail.sale %}
-                        <div class="ribbon zoa-sale"><span>-{{productDetail.sale}}%</span></div>
+                        {% if product.sale %}
+                        <div class="ribbon zoa-sale"><span>-{{product.sale}}%</span></div>
                         {% endif %} 
                         
                         <div class="main-img js-product-slider">
-                            {% for photo in productDetail.photoList %}
-                                    {% if photo.photoBin %}
-                                    <img src="{{photo.photoBin.url}}" alt="images" class="img-responsive">
-                                    {% elif photo.photoUrl %}
-                                    <img src="{{photo.photoUrl}}" alt="images" class="img-responsive">
-                                    {% else %}
-                                    <img src="/media/images/no_img.jpg" alt="images" class="img-responsive">
-                                    {% endif %}
+                            {% for photo in product.photoList %}
+                                <img src="{{photo.photo.url}}" alt="{{photo.photo.title}}" class="img-responsive">
                             {% endfor %}
                         </div>
                     </div>
                     <div class="multiple-img-list-ver2 js-click-product">        
-                        {% for photo in productDetail.photoList %}
+                        {% for photo in product.photoList %}
                             <div class="product-col">
                                 <div class="img">
-                                    {% if photo.photoBin %}
-                                    <img src="{{photo.photoBin.url}}" alt="images" class="img-responsive">
-                                    {% elif photo.photoUrl %}
-                                    <img src="{{photo.photoUrl}}" alt="images" class="img-responsive">
-                                    {% else %}
-                                    <img src="/media/images/no_img.jpg" alt="images" class="img-responsive">
-                                    {% endif %}
+                                    <img src="{{photo.photo.url}}" alt="{{photo.photo.title}}" class="img-responsive">
                                 </div>       
                             </div>
                         {% endfor %}
@@ -43,15 +32,16 @@
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="single-product-info product-info product-grid-v2">
-                    <h3 class="product-title"><a href="/{{productDetail.id}}/detail">{{productDetail.brand}} {{productDetail.name}}</a></h3>
+                    <h3 class="product-title"><a href="/{{product.id}}/detail">{{product.brand}} {{product.name}}</a></h3>
                     <div class="product-price">
-                        {% if productDetail.sale %}
-                        <span class="old thin">${{productDetail.price}}</span>
-                        <span>${{productDetail.price|calcprice:productDetail.sale}}</span>
+                        {% if product.sale %}
+                        <span class="old thin">{{product.price}} BYN</span>
+                        <span>{{product.price|calcprice:product.sale}} BYN</span>
                         {% else %} 
-                        <span>${{productDetail.price}}</span>
+                        <span>{{product.price}} BYN</span>
                         {% endif %}
                     </div>
+                    
                     <div class="flex product-rating">
                         <div class="group-star">
                             <span class="star star-5"></span>
@@ -62,9 +52,9 @@
                         </div>
                         <div class="number-rating">( 02 reviews )</div>
                     </div>
-                    {% if productDetail.shortdescription %}
+                    {% if product.shortdescription %}
                     <div class="short-desc">
-                        <p class="product-desc">{{productDetail.shortdescription}}</p>
+                        <p class="product-desc">{{product.shortdescription}}</p>
                     </div>
                     {% endif %}
                     <!-- <div class="color-group">
@@ -73,28 +63,30 @@
                         <a href="#" class="circle active yellow"></a>
                         <a href="#" class="circle white"></a>
                     </div> -->
-                    {% for attribute in simpleAttributes %}
+                    
                     <div class="product-size">
                         <div class="size-group">
-                            <label>{{attribute.name}} :</label>
-                            <select class="single-option-selector" data-option="option1" id="productSelect-option-0">
-                                {% for value in attribute.values %}
-                                <option value="{{value}}">{{value}}</option>
+                            <label>{{option.name}} :</label>
+                            <select class="single-option-selector" name="option_id" form="order">
+                                {% for opt in option.sizes %}
+                                <option value="{{opt.id}}" >{{opt.value}} ({{opt.count}} шт.)</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <a href="" class="size-guide">Size guide</a>
                     </div>
-                    {% endfor %}
-                    {% for attribute in variableAttributes %}
-                    <div class="product-size">
-                            <label>{{attribute.name}} :</label>
-                                {% for var in attribute.values %}
-                                <a href="/{{var.id}}/detail">{{var.value}}</a>
-                                {% endfor %}
 
+                    
+                    <div class="product-size">
+                            <label>Цвет :</label>
+                                {% for variation in variations %}
+                                <a href="{{variation.url}}">{{variation.color.name}}</a>
+                                {% endfor %}
                     </div>
-                    {% endfor %}
+                    
+                    <form id="order" action="" method="POST">
+                    {% csrf_token %}
+                    
                     <div class="single-product-button-group">
                         <div class="flex align-items-center element-button">
                             <div class="zoa-qtt">
@@ -104,20 +96,20 @@
                                 <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
                                 </button>
                             </div>
-                            <a href="" class="zoa-btn zoa-addcart">
-                                    <i class="zoa-icon-cart"></i>Добавить в корзину
-                                </a>
+                                <input type="hidden" name="pk" value="{{product.id}}">
+                                <input type="submit" class="zoa-btn zoa-addcart" value="Добвить в корзину">
                         </div>
                         <a href="" class="btn-wishlist">+ Add to wishlist</a>
                     </div>
+                    </form>
                     <div class="product-tags">
                         <div class="element-tag">
                             <label>SKU :</label>
-                            <span>{{productDetail.sku}}</span>
+                            <span>{{product.sku}}</span>
                         </div>
                         <div class="element-tag">
                             <label>Categories :</label>
-                            <a href="">{{productDetail.category}}</a>
+                            <a href="">{{product.category}}</a>
                         </div>
                         <div class="element-tag">
                             <label>Tags :</label>
@@ -148,7 +140,7 @@
         <div class="tab-content">
             <div id="desc" class="tab-pane fade in ">
                 <div class="content-desc text-center">
-                        <p>{{productDetail.description}}</p>
+                        <p>{{product.description}}</p>
                 </div>
             </div>
             <div id="review" class="tab-pane fade in active ">
@@ -221,3 +213,11 @@
     </div>
 
 {% endblock content %}
+{% block scripts %} 
+    <script>
+        function goTo(url) {
+            console.log(url);
+            window.location.replace(url);
+        }
+    </script>
+{% endblock scripts %}

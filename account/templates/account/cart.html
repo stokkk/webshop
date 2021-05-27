@@ -1,0 +1,199 @@
+{% extends 'main/base_template.html' %}
+{% load static %}
+{% load mainutils %}
+{% block title %}Корзина - {{user.username}}{% endblock %}
+{% block content %}
+
+<!-- Shopping cart -->
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>Приветствую, <b>{{user.username}}</b></h1>
+        </div>
+    </div>
+    <div class="zoa-cart">
+    <ul class="account-tab">
+        <li class="active"><a data-toggle="tab" href="#cart" aria-expanded="false">Shopping Cart</a></li>
+        <li class=""><a data-toggle="tab" href="#wishlist" aria-expanded="true">Wishlist</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="cart" class="tab-pane fade in active">
+            <div class="shopping-cart">
+                <div class="table-responsive">
+                    <table class="table cart-table">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Товар</th>
+                                <th class="product-name">Описание</th>
+                                <th class="product-name">Цвет</th>
+                                <th class="product-name">  Размер  </th>
+                                <th class="product-price">Цена</th>
+                                <th class="product-quantity">Количество</th>
+                                <th class="product-subtotal">Общее</th>
+                                <th class="product-remove">Удалить</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form action="" method="POST">
+                            {% csrf_token %}
+                            {% for item in cart_items %} 
+                            <tr class="item_cart">
+                                <td class=" product-name">
+                                    <div class="product-img">
+                                        <img src="{{item.product.photo.url}}" alt="{{item.product.photo.title}}" class="img-responsive">
+                                    </div>
+                                </td>
+                                <td class="product-desc">
+                                    <div class="product-info">
+                                        <a href="{% url 'product_detail' item.product.id %}" title="">{{item.product.brand}} {{item.product.name}}</a>
+                                        <span>#SKU: {{item.product.sku}}</span>
+                                    </div>
+                                </td>
+                                <td class="product-same">
+                                    <div class="product-info">
+                                        <p>{{item.product.color}}</p>
+                                    </div>
+                                </td>
+                                <td class="product-same">
+                                    <div class="product-info">
+                                        <p>{{item.product.size.value}}</p>
+                                    </div>
+                                </td>
+                                <td class="product-same total-price">
+                                    {% if item.product.sale %}
+                                    <s>{{item.product.price}}</s>
+                                    <p class="price">{{item.product.price|calcprice:item.product.sale}}</p>
+                                    {% else %} 
+                                    <p class="price">{{item.product.price}}</p>
+                                    {% endif %}
+                                </td>
+                                <td class="bcart-quantity single-product-detail">
+                                    <div class="cart-qtt">
+                                        <button type="button" class="quantity-left-minus btn btn-number js-minus" data-type="minus" data-field="">
+                                            <span class="minus-icon"><i class="ion-ios-minus-empty"></i></span>
+                                        </button>
+                                        <input type="text" id="{{item.product.id}}" name="number" value="{{item.number}}" onchange="sendAjax(this, '{{xhr_url}}')" class="product_quantity_number js-number">
+                                        <input type="hidden" name="option_id" value="{{item.product.size.id}}">
+                                        <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
+                                            <span class="plus-icon"><i class="ion-ios-plus-empty"></i></span>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="total-price">
+                                    <p class="price">{{item.totalPrice}}</p>
+                                </td>
+                                <td class="product-remove">
+                                    <button name="remove" value="{{item.product.id}}" type="submit" class="btn-del"><i class="ion-ios-close-empty"></i></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </form>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-cart-bottom">
+                    <div class="row">
+                        <div class="col-md-7 col-sm-6 col-xs-12">
+                            <div class="cart-btn-group">
+                                <a href="" class="btn-continue">Продолжить шоппинг</a>
+                                <a href="" class="btn-clear">Очистить</a>
+                            </div>
+                            <div class="coupon-group">
+                                <form class="form_coupon" action="#" method="post">
+                                    <input type="email" value="" placeholder="COUPON CODE" name="EMAIL" id="mail" class="newsletter-input form-control">
+                                    <div class="input-icon">
+                                        <img src="img/coupon.png" alt="">
+                                    </div>
+                                </form>
+                            <a href="#" class="btn-update">Обновить</a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 col-xs-12">
+                            <div class="cart-text">
+                                <div class="cart-element text-bold">
+                                    <p>Всего:</p>
+                                    <p>{{total}} BYN</p>
+                                </div>
+                            </div>
+                            <a href="" class="zoa-btn zoa-checkout">Оформить заказ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div id="wishlist" class="tab-pane fade">
+            <div class="shopping-cart">
+                <div class="table-responsive">
+                    <table class="table cart-table">
+                        
+                        <tbody>
+                            <tr class="item_cart">
+                                <td class="product-remove pd-right-30">
+                                    <a href="#" class="btn-del"><i class="ion-ios-close-empty"></i></a>
+                                </td>
+                                <td class=" product-name">
+                                    <div class="product-img">
+                                        <img src="img/product/cart_product_1.jpg" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="product-desc">
+                                    <div class="product-info">
+                                        <a href="#" title="">Harman Kardon Onyx Studio </a>
+                                        <span>#SKU: 113106</span>
+                                    </div>
+                                </td>
+                                <td class="wl total-price">
+                                    <p class="price">$19.00</p>
+                                </td>
+                                <td>
+                                    <a href="" class="zoa-select">Select Options</a>
+                                </td>
+                                <td>
+                                    <a href="" class="zoa-btn zoa-wl-addcart">ADD TO CART</a>
+                                </td>
+                            </tr>
+                                <tr class="item_cart">
+                                <td class="product-remove pd-right-30">
+                                    <a href="#" class="btn-del"><i class="ion-ios-close-empty"></i></a>
+                                </td>
+                                <td class=" product-name">
+                                    <div class="product-img">
+                                        <img src="img/product/cart_product_3.jpg" alt="Product">
+                                    </div>
+                                </td>
+                                <td class="product-desc">
+                                    <div class="product-info">
+                                        <a href="#" title="">Harman Kardon Onyx Studio </a>
+                                        <span>#SKU: 113106</span>
+                                    </div>
+                                </td>
+                                <td class="wl total-price">
+                                    <p class="price">$19.00</p>
+                                </td>
+                                <td>
+                                    <a href="" class="zoa-select">Select Options</a>
+                                </td>
+                                <td>
+                                    <a href="" class="zoa-btn zoa-wl-addcart">ADD TO CART</a>
+                                </td>
+                            </tr>
+                        </tbody>    
+                    </table>
+                </div>
+                <div class="table-cart-bottom v2">
+                    <div class="cart-btn-group v2">
+                                <a href="" class="btn-continue">Continue shopping</a>
+                                <a href="" class="btn-clear">Share my wishlist via mail <img src="img/Icon_mail.png" alt=""></a>
+                            </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    </div>   
+</div>
+<!-- End Shopping cart -->
+{% endblock content %}
+
+{% block scripts %} 
+<script src="{% static 'js/uploadcart.js' %}"></script>
+{% endblock scripts %}

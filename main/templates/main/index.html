@@ -7,14 +7,14 @@
         <div class="slide v3">
             <div class="js-slider-v4">
                 <div class="slide-img">
-                    <img src="{% static 'img/background.jpeg' %}" alt="" class="img-responsive">
+                    <img src="{% static 'img/zx-onsite-hp-mh-d_tcm205-536153.jpg' %}" alt="" class="img-responsive">
                     <div class="box-center content2">
-                        <h3>Anna Collection</h3>
+                        <h3>Adidas Collection</h3>
                         <a href="" class="slide-btn">Shop Now</a>
                     </div>
                 </div>
                 <div class="slide-img">
-                    <img src="{% static 'img/slide/slider-1-home-1.png  ' %}" alt="" class="img-responsive">
+                    <img src="{% static 'img/feel-the-future-hp-mh-d_tcm329-555715.jpg' %}" alt="" class="img-responsive">
                     <div class="box-center content1">
                         
                     </div>
@@ -36,11 +36,11 @@
             <div class="col-md-5 col-sm-6 col-xs-12">
                 <div class="trend-img hover-images">
                     
-                        <img class="img-responsive" src="{% static 'img/home1/trend.png' %}" alt="">
+                        <img class="img-responsive" src="{{topcategory.img}}" alt="">
                     
                     <div class="box-center align-items-end">
                         <h3 class="zoa-category-box-title">
-                            <a href="#">#trend</a>
+                            <a href="#">{{topcategory.title}}</a>
                         </h3>
                     </div>
                 </div>
@@ -48,20 +48,16 @@
 
             <div class="col-md-7 col-sm-6 col-xs-12">
                 <div class="row engoc-row-equal">
-                    {% for product in products|slice:":6" %}
+                    {% for product in products %}
                     <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 product-item">
                         <div class="product-img">
-                            {% for photo in product.productphoto_set.all|slice:":1" %}
-                                {% if photo.photo.photoBin %}
-                                <a href="{{product.id}}/detail"><img src="{{ photo.photo.photoBin.url}}" alt="" class="img-responsive"></a>
-                                {% elif photo.photo.photoUrl %}
-                                <a href="{{product.id}}/detail"><img src="{{ photo.photo.photoUrl}}" alt="" class="img-responsive"></a>
-                                {% else %}
-                                <a href="{{product.id}}/detail"><img src="/media/images/no_img.jpg" alt="" class="img-responsive"></a>
-                                {% endif %}
-                            {% endfor %}
-                            {% if product.sale_size %} 
-                            <div class="ribbon zoa-sale"><span>-{{product.sale_size}}%</span></div>
+                            {% if product.photo %}
+                            <a href="{% url 'product_detail' product.id %}"><img src="{{ product.photo.url }}" alt="{{ product.photo.title}}" class="img-responsive"></a>
+                            {% else %}
+                            <a href="{% url 'product_detail' product.id %}"><img src="{% static 'img/no-image.jpg' %}" class="img-responsive"></a>
+                            {% endif %}
+                            {% if product.sale %} 
+                            <div class="ribbon zoa-sale"><span>-{{product.sale}}%</span></div>
                             {% endif %}
                             <div class="product-button-group">
                                 <a href="#" class="zoa-btn zoa-quickview">
@@ -77,22 +73,22 @@
                         </div>
                         <div class="product-info text-center">
                             <h3 class="product-title">
-                                <a href="">{{product.product.name}}</a>
+                                <a href="{% url 'product_detail' product.id %}">{{product.name}}</a>
                             </h3>
                             <div class="product-price">
-                                {% if product.sale_size %}
-                                <span class="old">${{product.reg_price}}</span>
-                                <span>${{ product.reg_price|calcprice:product.sale_size }}</span>
+                                {% if product.sale %}
+                                <span class="old">${{product.price}}</span>
+                                <span>${{ product.new_price }}</span>
                                 {% else %}
-                                <span>${{product.reg_price}}</span>
+                                <span>${{product.price}}</span>
                                 {% endif %}
                                 
                             </div>
-                            <div class="color-group">
+                            <!-- <div class="color-group">
                                 <a href="#" class="circle gray"></a>
                                 <a href="#" class="circle yellow active"></a>
                                 <a href="#" class="circle white"></a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     {% endfor %}

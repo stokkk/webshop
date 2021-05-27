@@ -10,71 +10,73 @@ class ProductPhotoInline(admin.StackedInline):
 
 
 class ProductVarInline(admin.StackedInline):
-    model = ProductVar
+    model = Variation
+    extra = 1
+
+
+class OptionInline(admin.StackedInline):
+    model = Options
     extra = 1
 
 
 class ProductPhotoAdmin(admin.ModelAdmin):
-    list_display = ('get_product_sku', 'get_photo_name')
+    list_display = ('get_product_sku', 'get_title')
 
     def get_product_sku(self, obj):
         return obj.product.sku
     get_product_sku.short_description = "SKU"
 
-    def get_photo_name(self, obj):
-        return obj.photo.photoName
-    get_photo_name.short_description = "Имя фото"
+    def get_title(self, obj):
+        return obj.photo.title
+    get_title.short_description = "Описание"
 
 
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('get_photo_name',)
-    inlines = (ProductPhotoInline,)
+    list_display = ('get_title',)
 
-    def get_photo_name(self, obj):
-        return obj.photoName
-    get_photo_name.short_description = "Имя фото"
+    def get_title(self, obj):
+        return obj.title
+    get_title.short_description = "Описание"
     def get_product_sku(self, obj):
         return obj.productphoto_set.filter(photo=obj.id)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'pub_date', 'category', 'sex', 'season')
+    list_display = ('name', 'brand', 'pub_date', 'category', 'sex')
     search_fields = ('name',)
-    list_filter = ('name', 'brand', 'pub_date', 'category', 'sex', 'season')
+    list_filter = ('name', 'brand', 'pub_date', 'category', 'sex')
     list_per_page = 25
     inlines = (ProductVarInline,)
 
 
-class ProductVarAdmin(admin.ModelAdmin):
+class VariationAdmin(admin.ModelAdmin):
     list_display = (
-        'sku', 'get_product_name', 'count', 'reg_price', 
-        'group_id', 'get_attribute_name', 'get_value'
+        'id', 'get_product_name', 'get_color', 'reg_price', 'sale_size'
     )
-    search_fields = ('sku',)
-    list_filter = ('sku', 'count', 'reg_price')
-    inlines = (ProductPhotoInline,)
+    # search_fields = ('sku',)
+    # list_filter = ('sku', 'count', 'reg_price')
+    inlines = (ProductPhotoInline, OptionInline)
 
-    def get_value(self, obj):
-        return obj.value.value
-    get_value.short_description = 'Значение'
-
-    def get_attribute_name(self, obj):
-        return obj.value.attribute.title
-    get_attribute_name.short_description = 'Аттрибут'
+    def get_color(self, inst):
+        return inst.color.name
+    get_color.short_description = "Цвет"
 
     def get_product_name(self, obj):
         return obj.product.name
     get_product_name.short_description = 'Имя товара'
 
 
+class OptionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'size', 'count')
+
 
 admin.site.register(Brand)
+admin.site.register(Country)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductPhoto, ProductPhotoAdmin)
 admin.site.register(Categories)
-admin.site.register(Attributes)
-admin.site.register(AttributeAndCategory)
-admin.site.register(ProductVar, ProductVarAdmin)
-admin.site.register(Values)
+admin.site.register(Variation, VariationAdmin)
+admin.site.register(Colors)
+admin.site.register(Options, OptionAdmin)
 

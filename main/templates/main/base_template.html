@@ -156,7 +156,19 @@
 
     </div>
     <div class="wrappage">
-        
+        <div id="msg">
+            {% if message_failure %} 
+            <div class="info failure">
+                <p>{{message_failure}}</p>
+            </div>
+            {% endif %}
+    
+            {% if message_success %} 
+            <div class="info success">
+                <p>{{message_success}}</p>
+            </div>
+            {% endif %}    
+        </div>
         {% include 'main/header.html' %} <!-- /header -->
         {% block content %} {% endblock content %}
         {% include 'main/footer.html' %}

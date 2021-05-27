@@ -10,5 +10,6 @@ env/
 static_dev/*
 Акбаров-15ИТ1-Пояснительная записка.docx
 Отчет по практике.docx
-полезные ссылки.txtmigrations_main.txt
-
+полезные ссылки.txt
+migrations_main.txt
+secret_key.txt

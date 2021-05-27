@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Ajax</title>
+</head>
+<body>
+        <label for="result">Question text: </label><span id="result">{{question_text}}</span>
+        <form id="get_question_text"method="POST">
+            {% csrf_token %}
+            <label for="id">Question id: </label>
+            <input id="id" type="number" name="number" min="1" max="100" value="1"><br>
+            <input type="submit" value="Send">    
+        </form>
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script>
+            $('#get_question_text').on('submit', function(e) {
+                e.preventDefault();
+                var question_pk = $(this).find('#id').val();
+                $.get('{% url 'polls:ajload' %}',
+                {'question_pk': question_pk},
+                function(response){ $('#result').text(response.question_text)})
+            })
+        </script>
+</body>
+</html>

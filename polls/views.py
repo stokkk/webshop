@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from .models import Question, Choice
 # Create your views here.
@@ -36,3 +36,14 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+def AjaxLoaderView(request):
+    if request.method == 'GET':
+        question_pk = request.GET.get('question_pk')
+        q = get_object_or_404(Question, pk=question_pk)
+        return JsonResponse({'question_text': q.question_text})
+
+
+def QuestionCheckView(request):
+    return render(request, 'polls/question_check.html', context={})

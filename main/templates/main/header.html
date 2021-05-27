@@ -33,7 +33,7 @@
                         </div>
                         <div class="element element-leaguage">
                             <a id="label2" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <img src="{% static 'img/icon-l.png' %}" alt="">
+                                <img src="{% static 'img/icon-l.png' %}" width="16px" height="16px" alt="">
                               <span>English</span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="label2">
@@ -235,7 +235,7 @@ C10.3,55.9,0,68.5,0,83.5v15.8c0,1.9,1.6,3.5,3.5,3.5h93c1.9,0,3.5-1.6,3.5-3.5V83.
                         </div>
                         {% if user.is_authenticated %} 
                         <div class="element element-cart">
-                            <a href="#" class="zoa-icon icon-cart">
+                            <a href="{% url 'cart' %}" class="zoa-icon icon-cart">
                                 <svg width="20" height="20" version="1.1" id="Layer_4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55.4 55.4" style="enable-background:new 0 0 55.4 55.4;" xml:space="preserve">
                                     <g>
                                         <rect x="0.2" y="17.4" width="55" height="3.4" />
@@ -254,7 +254,7 @@ c0.9,0,1.7,0.6,1.9,1.5L43.4,29c0.1,0.5,0,1-0.2,1.5c-0.3,0.5-0.7,0.8-1.1,0.9c-0.2
 z" />
                                     </g>
                                 </svg>
-                                <span class="count cart-count">0</span>
+                                <span class="count cart-count">{{user.cart_set.count}}</span>
                             </a>
                         </div>
                         {% endif %}
