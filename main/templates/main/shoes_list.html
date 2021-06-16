@@ -1,0 +1,160 @@
+{% extends 'main/base_template.html' %}
+{% load static %} 
+{% load mainutils %}
+{% block title %}Список товаров{% endblock %}
+{% block content %} 
+<div class="container container-content">    
+    <div class="filter-collection-left hidden-lg hidden-md">
+      <a class="btn" ><i class="zoa-icon-filter"></i>Показать</a>
+    </div>
+</div>
+<div class="container container-content">
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-12 col-left collection-sidebar" id="filter-sidebar">
+            <form action="">
+            <div class="close-sidebar-collection hidden-lg hidden-md">
+              <span>Показать</span><i class="icon_close ion-close"></i>
+          </div>
+            <div class="widget-filter filter-cate filter-brand">
+                <h3>Пол</h3>
+                <ul>
+                    <li><input type="checkbox" name="sex" value="M"  id="sexM"><label for="sexM">Мужской</label></li>
+                    <li><input type="checkbox" name="sex" value="F"  id="sexF"><label for="sexF">Женский</label></li>
+                    <li><input type="checkbox" name="sex" value="U"  id="sexU"><label for="sexU">Унисекс</label></li>
+                </ul>
+            </div>
+            <div class="widget-filter filter-cate filter-brand">
+                <h3>Брэнд</h3>
+                <ul>
+                    {%for brand in brands %}
+                    <li><input type="checkbox" name="brand" value="{{brand.slug}}"  id="{{brand.slug}}{{brand.id}}"><label for="{{brand.slug}}{{brand.id}}">{{brand.name}}</label></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="widget-filter filter-cate no-pd-top">
+                <h3>Категории</h3>
+                <ul>
+                    {%for category in categories %}
+                    <li><input type="checkbox" name="category" value="{{category.slug}}"  id="{{category.slug}}{{category.id}}"><label for="{{category.slug}}{{category.id}}">{{category.name}}</label></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="widget-filter filter-cate filter-color">
+                <h3>Цвет</h3>
+                <ul>
+                    {%for color in colors %}
+                    <li><input type="checkbox" name="color" value="{{color.slug}}" id="{{color.slug}}{{color.id}}"><label for="{{color.slug}}{{color.id}}">{{color.name}}</label></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="widget-filter filter-cate filter-size">
+                <h3>Размеры</h3>
+                    <ul>
+                        {%for size in sizes %}
+                        <li><input type="checkbox" name="size" value="{{size.value}}" id="{{size.id}}"><label for="{{size.id}}">{{size.value}}</label></li>
+                        {% endfor %}
+                    </ul>
+            </div>
+            <div class="widget-filter filter-cate filter-price">
+                <h3>Цена</h3>
+                <label for="price-start">От</label><input type="number" min="0" max="9999" name="price-start" value="0.0" id="price-start">
+                <label for="price-end">До</label><input type="number" min="0" max="{{max_price}}" name="price-end" id="price-end" value="{{max_price}}">
+            </div>
+
+            <input type="submit" class="zoa-btn btn-filter" title="fjakdsjfk;ad" value="Показать">
+            </form>
+        </div>
+        <div class="col-md-9 col-sm-12 col-xs-12 collection-list">
+            <div class="product-collection-grid product-grid bd-bottom">
+                <div class="shop-top">
+        <div class="shop-element left">
+            <h1 class="shop-title">Товары</h1>
+        </div>
+        <div class="shop-element left right">
+            <ul class="js-filter">
+                <li class="filter">
+                    <a onClick="return false;" href=""><i class="zoa-icon-sort"></i>Сортировать по: <span>{{current_sort}}</span></a>
+                    <ul class="dropdown-menu">  
+                      <li><a href="?sort=rating">популярности</a></li>
+                      <li><a href="?sort=date-new">сначала новые</a></li>
+                      <li><a href="?sort=date-old">сначала старые</a></li>
+                      <li><a href="?sort=name-asc">названию, A-Z</a></li>
+                      <li><a href="?sort=name-desc">названию, Z-A</a></li>
+                      <li><a href="?sort=price-asc">цена, убыванию</a></li>
+                      <li><a href="?sort=price-desc">цена, возростанию</a></li>
+                  </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+                <div class="row engoc-row-equal">
+                {% for product in product_list %}
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 product-item">
+                        <div class="product-img">
+                            <a href="{% url 'product_detail' product.id %}"><img src="{{product.photo.url}}" alt="{{product.photo.title}}" class="img-responsive"></a>
+                            {% if product.not_in_stock %} 
+                            <div class="overlay-img box-center">
+                                <div class="status">
+                                    <span>НЕТ НА СКЛАДЕ</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if product.sale %}
+                            <div class="ribbon zoa-sale"><span>-{{product.sale}}%</span></div>
+                            {% elif product.hot %}
+                            <div class="ribbon zoa-hot"><span>Hot</span></div>
+                            {% elif product.new %}
+                            <div class="ribbon zoa-new"><span>Новинка</span></div>
+                            {% endif %}
+                            
+                            <div class="product-button-group">
+                                <a href="#" class="zoa-btn zoa-quickview">
+                                    <span class="zoa-icon-quick-view"></span>
+                                </a>
+                                <a href="#" class="zoa-btn zoa-wishlist">
+                                    <span class="zoa-icon-heart"></span>
+                                </a>
+                                <a href="#" class="zoa-btn zoa-addcart">
+                                    <span class="zoa-icon-cart"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="product-info text-center">
+                            <h3 class="product-title">
+                                <a href="">{{product.brand}} {{product.name}}</a>
+                            </h3>
+                            <div class="product-price">
+                                {% if product.sale %}
+                                <span class="old">{{product.price}} BYN</span>
+                                <span>{{ product.new_price }} BYN</span>
+                                {% else %}
+                                <span>{{product.price}} BYN</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                
+                <div class="shop-bottom">
+                    <ul class="pagination">
+                        {% if product_list.has_previous %}
+                        <li><a href="?page=1">1</a></li>
+                        <li><a href="?page={{product_list.previous_page_number}}">&laquo;</a></li>
+                        {% endif %}
+                        <li class="active"><a href="#" >{{product_list.number}}</a></li>
+
+                        {% if product_list.has_next %} 
+                        <li><a href="?page={{product_list.next_page_number}}"><i class="fa fa-angle-double-right"></i></a></li>
+                        <li><a href="?page={{product_list.paginator.num_pages}}">{{product_list.paginator.num_pages}}</a></li>
+                        {% endif %}
+                    </ul>
+                    <div class="shop-element right v2">
+                        <span>Показано {{product_list.start_index}}-{{product_list.end_index}} из {{shoes_number}} товаров.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

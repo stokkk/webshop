@@ -1,14 +1,13 @@
+from main.utils import calcTotalPrice
 from main.models import *
 from django.shortcuts import get_object_or_404, reverse
 
 from operator import attrgetter
-from collections import defaultdict
-from pprint import pprint
-
+from main.utils import calcTotalPrice
 
 def product_detail_context(request, pk):
     product = get_object_or_404(Variation, pk=pk)
-    return {'product':
+    context = {'product':
         {
             'id': product.id,
             'sku': product.sku,
@@ -19,12 +18,17 @@ def product_detail_context(request, pk):
             'description': product.product.description,
             'price': product.reg_price,
             'sale': product.sale_size,
+            'new_price': calcTotalPrice(product.reg_price, product.sale_size, 1),
             'photoList': list(map(attrgetter('photo'), product.productphoto_set.all())),
             'color': product.color
         },
         'option': get_options(product),
         'variations': get_variations(product)
     }
+    context.update( base_context_genre(request) )
+    context.update( Comments.get_comments(pk) )
+    context.update( {'number_of_comments': product.comments_set.count()})
+    return context
 
 
 def get_options(product):
@@ -40,7 +44,14 @@ def get_options(product):
         ]
     }
 
-
+def base_context_genre(request):
+    context = {
+        'user': request.user,
+    }
+    context.update( Brand.get_brands() )
+    context.update( Categories.get_categories())
+    return context
+    
 def get_variations(product):
     return [
         {

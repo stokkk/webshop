@@ -13,52 +13,32 @@
 {% endblock links %}
 {% block registration %}
 <div class="container h-100">
+    <br><br><br><br>
     <div id="register" class="tab-pane fade in active">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-md-4">
                 <form method="post" class="form-customer form-login" action="">
                     {% csrf_token %}
                     <div class="form-group">
+                        {{form.email.errors}}
                         <label for="{{ form.email.id_for_label}}">E-mail</label>
                         {{form.email}}
                     </div>
                     <div class="form-group">
+                        {{form.login.errors}}
                         <label for="{{form.login.id_for_label}}">Username</label>
                         {{form.login}}
                     </div>
                     <div class="form-group">
+                        {{form.password.errors}}
                         <label for="{{form.password.id_for_label}}">Password</label>
                         {{form.password}}
                     </div>
                     <div class="btn-button-group mg-top-30 mg-bottom-15">
-                        <button type="submit" class="zoa-btn btn-login hover-white">Sign Up</button>
+                        <button type="submit" class="zoa-btn btn-login hover-white">Зарегистрироваться</button>
                     </div>
                 </form>
-                <div class="social-group-button">
-                    <a href="" class="twitter button">
-                        <div class="slide">
-                            <p>
-                                Connect with Twitter
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-twitter">
-                    </i>
-                        </div>
-                    </a>
-                    <a href="" class="facebook button">
-                        <div class="slide">
-                            <p>
-                                Connect with Facebook
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-facebook">
-                    </i>
-                        </div>
-                    </a>
-                </div>
-                <span class="text-note">Already have an account? <a href="{% url 'login' %}">Sign In!</a></span>
+                <span class="text-note">Уже есть аккаунт? <a href="{% url 'login' %}">Авторизоваться!</a></span>
             </div>
         </div>
     </div>

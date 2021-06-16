@@ -2,7 +2,6 @@
 {% load mainutils %}
 {% block title %}{{product.brand}} {{product.name}}{% endblock %}
 {% block content %}
-
 <div class="container container-content">
     <div class="single-product-detail">
         <div class="row">
@@ -36,7 +35,7 @@
                     <div class="product-price">
                         {% if product.sale %}
                         <span class="old thin">{{product.price}} BYN</span>
-                        <span>{{product.price|calcprice:product.sale}} BYN</span>
+                        <span>{{product.new_price}} BYN</span>
                         {% else %} 
                         <span>{{product.price}} BYN</span>
                         {% endif %}
@@ -73,7 +72,6 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <a href="" class="size-guide">Size guide</a>
                     </div>
 
                     
@@ -97,22 +95,23 @@
                                 </button>
                             </div>
                                 <input type="hidden" name="pk" value="{{product.id}}">
-                                <input type="submit" class="zoa-btn zoa-addcart" value="Добвить в корзину">
+                                <input type="submit" id="abc" class="zoa-btn zoa-addcart" value="Добвить в корзину">
+                                
                         </div>
-                        <a href="" class="btn-wishlist">+ Add to wishlist</a>
+                        <a href="" class="btn-wishlist">+ Нравится</a>
                     </div>
                     </form>
                     <div class="product-tags">
                         <div class="element-tag">
-                            <label>SKU :</label>
+                            <label>Артикул :</label>
                             <span>{{product.sku}}</span>
                         </div>
                         <div class="element-tag">
-                            <label>Categories :</label>
+                            <label>Категории :</label>
                             <a href="">{{product.category}}</a>
                         </div>
                         <div class="element-tag">
-                            <label>Tags :</label>
+                            <label>Тэги :</label>
                             <a href="#">Back,</a>
                             <a href="#">Blue,</a>
                             <a href="#">new,</a>
@@ -120,7 +119,7 @@
                         </div>
                     </div>
                     <div class="product-social">
-                        <label>Share +</label>
+                        <label>Поделиться +</label>
                         <div class="social">
                             <a href=""><i class="fa fa-facebook"></i></a>
                             <a href=""><i class="fa fa-twitter"></i></a>
@@ -134,8 +133,8 @@
     </div>
     <div class="single-product-tab bd-bottom">
         <ul class="tabs text-center">
-            <li><a data-toggle="pill" href="#desc">Description</a></li>
-            <li class="active"><a data-toggle="pill" href="#review">Reviews <span class="review-number">2</span></a></li>
+            <li><a data-toggle="pill" href="#desc">Описание</a></li>
+            <li class="active"><a data-toggle="pill" href="#review">Отзывы <span class="bereview-numr">{{number_of_comments}}</span></a></li>
         </ul>
         <div class="tab-content">
             <div id="desc" class="tab-pane fade in ">
@@ -145,68 +144,68 @@
             </div>
             <div id="review" class="tab-pane fade in active ">
                 <ul class="review-content">
+                    {% for comment in comments %}
                     <li class="element-review">
-                        <p class="r-name">Felix Nguyen</p>
-                        <p class="r-date">25, March 2018</p>
-                        <div class="group-star">
-                            <span class="star star-5"></span>
-                            <span class="star star-4"></span>
-                            <span class="star star-3"></span>
-                            <span class="star star-2"></span>
-                            <span class="star star-1"></span>
+                        <p class="r-name">{{comment.user}}</p>
+                        <p class="r-date">{{comment.pub_date}}</p>
+                        <div class="rating-star">
+                            <div class="rating__body">
+                                <div class="rating__active"></div>
+                                <div class="rating__items">
+                                    <input type="radio" class="rating__item" name="rating" value="1">
+                                    <input type="radio" class="rating__item" name="rating" value="2">
+                                    <input type="radio" class="rating__item" name="rating" value="3">
+                                    <input type="radio" class="rating__item" name="rating" value="4">
+                                    <input type="radio" class="rating__item" name="rating" value="5">
+                                </div>
+                            </div>
+                            <div class="rating__value">{{comment.rate}}</div>
+                            {{form.rate}}
                         </div>
                         <p class="r-desc">
-                            Free shipping on orders over 150€ within Europe and North America. Place your order today and receive it within 48 hours. And now, free and easy returns within Europe.
+                            {{comment.text}}
                         </p>
                     </li>
-                    <li class="element-review">
-                        <p class="r-name">Felix Nguyen</p>
-                        <p class="r-date">25, March 2018</p>
-                        <div class="group-star">
-                            <span class="star star-5"></span>
-                            <span class="star star-4"></span>
-                            <span class="star star-3"></span>
-                            <span class="star star-2"></span>
-                            <span class="star star-1"></span>
-                        </div>
-                        <p class="r-desc">
-                            Free shipping on orders over 150€ within Europe and North America. Place your order today and receive it within 48 hours. And now, free and easy returns within Europe.
-                        </p>
-                    </li>
+                    {% endfor %}
                 </ul>
                 <div class="review-form">
-                    <h3 class="review-heading">Your Rating</h3>
-                    <div class="rating-star">
-                        <span class="fa fa-star-o" aria-hidden="true"></span>
-                        <span class="fa fa-star-o" aria-hidden="true"></span>
-                        <span class="fa fa-star-o" aria-hidden="true"></span>
-                        <span class="fa fa-star-o" aria-hidden="true"></span>
-                        <span class="fa fa-star-o" aria-hidden="true"></span>
-                    </div>
-                    <div class="cmt-form">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="name" class="form-control" name="comment[name]" value="" placeholder="Name *">
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="email" id="email" class="form-control" name="comment[email]" value="" placeholder="Phone Number">
+                    <div id="msg-place"></div>
+                    <form action="" method="POST">
+                        
+                        {% csrf_token %}
+                        <h3 class="review-heading">Оценка</h3>
+                        <div class="rating-star not-static">
+                            <div class="rating__body">
+                                <div class="rating__active"></div>
+                                <div class="rating__items">
+                                    <input type="radio" class="rating__item" name="rating" value="1">
+                                    <input type="radio" class="rating__item" name="rating" value="2">
+                                    <input type="radio" class="rating__item" name="rating" value="3">
+                                    <input type="radio" class="rating__item" name="rating" value="4">
+                                    <input type="radio" class="rating__item" name="rating" value="5">
                                 </div>
                             </div>
+                            <div class="rating__value">5</div>
+                            {{form.rate.errors}}
+                            {{form.rate}}
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <textarea id="message" class="form-control" name="comment[body]" rows="9" placeholder="Your reviews"></textarea>
+                        <div class="cmt-form">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{form.comment.errors}}
+                                            {{form.comment}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="zoa-btn">
+                                        Отправить
+                                    </button>
+                                </div>
+                            
                         </div>
-                        <div class="form-group text-center">
-                            <button type="submit" class="zoa-btn">
-                                Submit
-                            </button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

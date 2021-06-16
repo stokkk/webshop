@@ -1,0 +1,124 @@
+{% extends 'main/base_template.html' %}
+{% load static %} 
+{% block title %}Заказ - {{user.username}}{% endblock%}
+
+{% block content %} 
+<div class="check-out">
+    <div class="container">
+        <div class="titlell">
+            <h2>Заказ</h2>
+        </div>
+        <div class="row">
+            <form action="" method="post">
+                <input type="hidden" name="create" value="true">
+                {% for prod, option, number in order_products %} 
+                    <input type="hidden" value="{{prod}}" name="product_id">
+                    <input type="hidden" value="{{option}}" name="option_id">
+                    <input type="hidden" value="{{number}}" name="count">
+                {% endfor %}
+             <div class="col-md-7 col-sm-7">
+                <div class="form-name">
+                    <div class="billing">
+                        <h2 style="font-size: 26px; padding-bottom:20px;font-weight: bold">Детали доставки</h2>
+                        
+                                {% csrf_token %}
+                               <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        {{form.first_name.errors}}
+                                        <label class="out">Имя <span>*</span></label><br>
+                                        {{form.first_name}}
+                                    </div>
+                                <div class="col-md-6 col-sm-6">
+                                    {{form.last_name.errors}}
+                                    <label class="out">Фамилия <span>*</span></label><br>
+                                    {{form.last_name}}
+                                </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        {{form.email.errors}}
+                                        <label class="out">Электронная почта*</label><br>
+                                        {{form.email}}
+                                     </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        {{form.phone.errors}}
+                                        <label class="out">Телефон *</label><br>
+                                        {{form.phone}}
+                                    </div>
+                                </div>
+                                {{form.country.errors}}
+                                <label class="out">Страна *</label><br>
+                                {{form.country}}
+                                {{form.street.errors}}
+                                <label class="out" >Адрес *</label><br>
+                                {{form.street}}
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6 ">
+                                        {{form.postcode.errors}}
+                                         <label class="out">Postcode/ZIP</label><br>
+                                        {{form.postcode}}
+                                     </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        {{form.city.errors}}
+                                      <label class="out">Город *</label><br>
+                                        {{form.city}}
+                                    </div>
+                                </div>
+                                <input type="checkbox" value="true" name="save-data"><span style="color: #333;font-size:13px"> Сохранить данные?</span><br>
+                                {{form.comment.errors}}
+                                <label class="out" style="margin-top:20px">Детали заказа</label>
+                                {{form.comment}}
+                            
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-md-5 col-sm-5 ">
+                    <div class="order">
+                        <div class="content-order">
+                           <div class="table">
+                                <table >
+                                     <caption>Ваш заказ</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Товар</th>
+                                            <th></th>
+                                            <th>Стоимость</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in products %} 
+                                            <tr>
+                                                <td>{{product.name}}</td>
+                                                <td><i class="fa fa-times" aria-hidden="true"></i>{{product.count}}</td>
+                                                <td>{{product.price}}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="content-total">
+                                <div class="total">
+                                    <h5 class="sub-total">Всего</h5>
+                                    <h5 class="prince">{{totalPrice}} BYN</h5>
+                                </div>
+
+                                <div class="payment">
+                                    <input type="radio" name="delivery_type" value="" class="so1"><span style="font-size: 16px;color:#494949;">  Почтой</span>
+                                    <hr>
+                                    <input type="radio" name="delivery_type" class="so2"><span style="font-size: 16px;color:#494949"> Самовызов</span><br>
+                                    <hr>
+                                    <input type="radio" name="delivery_type" class="so2"><span style="font-size: 16px;color:#494949"> Доставка надом</span>
+                                </div>
+                                <div class="place-ober">
+                                    <button type="submit" class="ober">Оформить заказ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

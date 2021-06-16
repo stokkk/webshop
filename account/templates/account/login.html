@@ -13,11 +13,13 @@
 {% block wrapp %}
 {% block login %} 
 <div class="container h-100">
+    <br><br><br><br>
     <div id="login" class="tab-pane fade in active">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-md-4">
                 <form method="post" class="form-customer form-register" action="">
                     {% csrf_token %}
+                    {{form.non_field_errors}}
                     <div class="form-group">
                         {{form.login.errors}}
                         <label for={{form.login.id_for_label}}>Login</label>
@@ -32,39 +34,15 @@
                         <div class="checkbox">
                             <input data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true" />
                             <input name="RememberMe" type="hidden" value="false" />
-                            <label for="RememberMe">Remember me</label>
+                            <label for="RememberMe">Запомнить меня</label>
                         </div>
-                        <a href="" class="text-note no-mg">Forgot Password?</a>
+                        <a href="" class="text-note no-mg">Забыли пароль?</a>
                     </div>
                     <div class="btn-button-group mg-top-30 mg-bottom-15">
-                        <button type="submit" class="zoa-btn btn-login hover-white">Sign In</button>
+                        <button type="submit" class="zoa-btn btn-login hover-white">Авторизоваться</button>
                     </div>
                 </form>
-                <div class="social-group-button">
-                    <a href="" class="twitter button">
-                        <div class="slide">
-                            <p>
-                                Connect with Twitter
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-twitter">
-                    </i>
-                        </div>
-                    </a>
-                    <a href="" class="facebook button">
-                        <div class="slide">
-                            <p>
-                                Connect with Facebook
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-facebook">
-                    </i>
-                        </div>
-                    </a>
-                </div>
-                <span class="text-note">Don’t have an account? <a href="{% url 'register' %}">Register!</a></span>
+                <span class="text-note">У вас еще нету аккаунта? <a href="{% url 'register' %}">Зарегистрироваться!</a></span>
             </div>
         </div>
     </div>

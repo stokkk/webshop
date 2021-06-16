@@ -1,5 +1,5 @@
 from django import template
-
+from main.utils import make_url
 
 register = template.Library()
 
@@ -9,3 +9,4 @@ def calcprice(price, sale_value):
 
 
 register.filter('calcprice', calcprice)
+register.filter('makeurl', make_url)

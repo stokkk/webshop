@@ -42,24 +42,25 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'pub_date', 'category', 'sex')
+    list_display = ('name', 'brand', 'category', 'sex')
     search_fields = ('name',)
-    list_filter = ('name', 'brand', 'pub_date', 'category', 'sex')
+    list_filter = ('name', 'brand', 'category', 'sex')
     list_per_page = 25
     inlines = (ProductVarInline,)
 
 
 class VariationAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'get_product_name', 'get_color', 'reg_price', 'sale_size'
+        'id', 'get_product_name', 'get_color', 'was_published_recently', 'reg_price', 'sale_size'
     )
-    # search_fields = ('sku',)
-    # list_filter = ('sku', 'count', 'reg_price')
+    search_fields = ('id',)
+    list_filter = ('id', 'reg_price', 'sale_size')
     inlines = (ProductPhotoInline, OptionInline)
 
     def get_color(self, inst):
         return inst.color.name
     get_color.short_description = "Цвет"
+    
 
     def get_product_name(self, obj):
         return obj.product.name
@@ -70,10 +71,15 @@ class OptionAdmin(admin.ModelAdmin):
     list_display = ('id', 'size', 'count')
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'rate', 'was_published_recently')
+    list_filter = ('user', 'rate')
+
 admin.site.register(Brand)
 admin.site.register(Country)
 admin.site.register(Photo, PhotoAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Comments, CommentAdmin)
 admin.site.register(ProductPhoto, ProductPhotoAdmin)
 admin.site.register(Categories)
 admin.site.register(Variation, VariationAdmin)

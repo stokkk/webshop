@@ -6,16 +6,8 @@
 
 <!-- Shopping cart -->
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Приветствую, <b>{{user.username}}</b></h1>
-        </div>
-    </div>
     <div class="zoa-cart">
-    <ul class="account-tab">
-        <li class="active"><a data-toggle="tab" href="#cart" aria-expanded="false">Shopping Cart</a></li>
-        <li class=""><a data-toggle="tab" href="#wishlist" aria-expanded="true">Wishlist</a></li>
-    </ul>
+
     <div class="tab-content">
         <div id="cart" class="tab-pane fade in active">
             <div class="shopping-cart">
@@ -72,8 +64,9 @@
                                         <button type="button" class="quantity-left-minus btn btn-number js-minus" data-type="minus" data-field="">
                                             <span class="minus-icon"><i class="ion-ios-minus-empty"></i></span>
                                         </button>
-                                        <input type="text" id="{{item.product.id}}" name="number" value="{{item.number}}" onchange="sendAjax(this, '{{xhr_url}}')" class="product_quantity_number js-number">
-                                        <input type="hidden" name="option_id" value="{{item.product.size.id}}">
+                                        <input type="text" id="{{item.product.size.id}}" name="cart_item" value="{{item.number}}"
+                                            onchange="sendAjax(this, '{{xhr_url}}')" class="product_quantity_number js-number">
+                                        <input type="hidden" name="product_id" value="{{item.product.id}}">
                                         <button type="button" class="quantity-right-plus btn btn-number js-plus" data-type="plus" data-field="">
                                             <span class="plus-icon"><i class="ion-ios-plus-empty"></i></span>
                                         </button>
@@ -83,7 +76,7 @@
                                     <p class="price">{{item.totalPrice}}</p>
                                 </td>
                                 <td class="product-remove">
-                                    <button name="remove" value="{{item.product.id}}" type="submit" class="btn-del"><i class="ion-ios-close-empty"></i></button>
+                                    <button name="remove" value="{{item.product.size.id}}" type="submit" class="btn-del"><i class="ion-ios-close-empty"></i></button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -115,79 +108,20 @@
                                     <p>{{total}} BYN</p>
                                 </div>
                             </div>
-                            <a href="" class="zoa-btn zoa-checkout">Оформить заказ</a>
+                            <form action="{% url 'create_order' %}" method="POST">
+                                {% csrf_token %}
+                                {% for item in cart_items %} 
+                                    <input type="hidden" name="product_id" value="{{item.product.id}}">
+                                    <input type="hidden" name="option_id" value="{{item.product.size.id}}">
+                                    <input type="hidden" name="count" value="{{item.number}}">
+                                {% endfor %}
+                                <button type="submit" class="zoa-btn zoa-checkout">Оформить заказ</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <div id="wishlist" class="tab-pane fade">
-            <div class="shopping-cart">
-                <div class="table-responsive">
-                    <table class="table cart-table">
-                        
-                        <tbody>
-                            <tr class="item_cart">
-                                <td class="product-remove pd-right-30">
-                                    <a href="#" class="btn-del"><i class="ion-ios-close-empty"></i></a>
-                                </td>
-                                <td class=" product-name">
-                                    <div class="product-img">
-                                        <img src="img/product/cart_product_1.jpg" alt="Product">
-                                    </div>
-                                </td>
-                                <td class="product-desc">
-                                    <div class="product-info">
-                                        <a href="#" title="">Harman Kardon Onyx Studio </a>
-                                        <span>#SKU: 113106</span>
-                                    </div>
-                                </td>
-                                <td class="wl total-price">
-                                    <p class="price">$19.00</p>
-                                </td>
-                                <td>
-                                    <a href="" class="zoa-select">Select Options</a>
-                                </td>
-                                <td>
-                                    <a href="" class="zoa-btn zoa-wl-addcart">ADD TO CART</a>
-                                </td>
-                            </tr>
-                                <tr class="item_cart">
-                                <td class="product-remove pd-right-30">
-                                    <a href="#" class="btn-del"><i class="ion-ios-close-empty"></i></a>
-                                </td>
-                                <td class=" product-name">
-                                    <div class="product-img">
-                                        <img src="img/product/cart_product_3.jpg" alt="Product">
-                                    </div>
-                                </td>
-                                <td class="product-desc">
-                                    <div class="product-info">
-                                        <a href="#" title="">Harman Kardon Onyx Studio </a>
-                                        <span>#SKU: 113106</span>
-                                    </div>
-                                </td>
-                                <td class="wl total-price">
-                                    <p class="price">$19.00</p>
-                                </td>
-                                <td>
-                                    <a href="" class="zoa-select">Select Options</a>
-                                </td>
-                                <td>
-                                    <a href="" class="zoa-btn zoa-wl-addcart">ADD TO CART</a>
-                                </td>
-                            </tr>
-                        </tbody>    
-                    </table>
-                </div>
-                <div class="table-cart-bottom v2">
-                    <div class="cart-btn-group v2">
-                                <a href="" class="btn-continue">Continue shopping</a>
-                                <a href="" class="btn-clear">Share my wishlist via mail <img src="img/Icon_mail.png" alt=""></a>
-                            </div>
-                </div>
-            </div>
-        </div> -->
     </div>
     </div>   
 </div>
