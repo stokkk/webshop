@@ -113,24 +113,24 @@
                                 <div class="row">
                                     <div class="cate-item col-md-4 col-sm-12">
                                         <div class="demo-img">
-                                            <a href="02-Shop_v1.html" class="effect-img3 plus-zoom">
+                                            <a href="{% url 'product_list' %}?sex=F&sort=date-new" class="effect-img3 plus-zoom">
                                                                 <img src="{% static 'img/onsale1.jpg' %}" alt="" class="img-reponsive">
 
                                                             </a>
                                         </div>
-                                        <div class="demo-text text-center">New Trending '18</div>
+                                        <div class="demo-text text-center">Тренды для женщин</div>
                                     </div>
                                     <div class="cate-item col-md-4 col-sm-12">
                                         <div class="demo-img">
-                                            <a class="effect-img3 plus-zoom" href=""><img src="{% static 'img/onsale2.jpg' %}" alt="02-Shop_v2.html" class="img-reponsive"></a>
+                                            <a class="effect-img3 plus-zoom" href="{% url 'product_list' %}?sort=date-new"><img src="{% static 'img/onsale2.jpg' %}" alt="02-Shop_v2.html" class="img-reponsive"></a>
                                         </div>
-                                        <div class="demo-text text-center">New Lookbooks</div>
+                                        <div class="demo-text text-center">Новинки</div>
                                     </div>
                                     <div class="cate-item col-md-4 col-sm-12">
                                         <div class="demo-img">
-                                            <a class="effect-img3 plus-zoom" href="02-Shop_v3.html"><img src="{% static 'img/onsale3.jpg' %}" alt="" class="img-reponsive"></a>
+                                            <a class="effect-img3 plus-zoom" href="{% url 'product_list' %}?sale=0"><img src="{% static 'img/onsale3.jpg' %}" alt="" class="img-reponsive"></a>
                                         </div>
-                                        <div class="demo-text text-center">Onsale</div>
+                                        <div class="demo-text text-center">На скидке</div>
                                     </div>
                                 </div>
                             </div>
