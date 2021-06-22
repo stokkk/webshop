@@ -1,3 +1,20 @@
-<h1>Webshop</h1>
-<p>Web application - shoestore.</br>
-For graduating project in Polotsk State University</p>
+<h1>Дипломный проект</h1>
+<p><strong>Тема:</strong> Система управления контентом сайта "Интернет-магазин обуви"</p>
+<p><strong>Автор:</strong> Гудойть Денис Станиславович</p>
+<ul>
+<p>Этапы установки:</p>
+<li>1. Скопировать папку "src/webshop-master" в рабочую директорию.</li>
+<li>2. Установить интерпретатор python</li>
+<li>
+	<ul>
+	3. Создать виртуальное окружение python</li>
+		<li>3.1 выполнить команду в терминале <i>python -m venv env</i></li>
+		<li>3.2 выполнить команду в терминале <i>env/activate</i></li>
+	</ul>
+</li>
+<li>4. Установить дополнительные зависимости командой <i>pip install -r requirements.txt</i></li>
+<li>5. Создать базу данных "shoestoredb" на сервере.</li>
+<li>6. Создать администратора в базе данных.</li>
+<li>7. Запустить приложение на сервере командой "python manage.py runserver"</li>
+</ul>
+<strong>ГОТОВО!<strong>
