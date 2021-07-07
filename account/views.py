@@ -14,7 +14,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-#models
 from .models import Cart, Order
 from main.models import Variation, ProductPhoto, Options
 from main.utils import calcTotalPrice
@@ -23,8 +22,6 @@ from main.utils import calcTotalPrice
 def AccountView(request):
     context = base_context_genre(request)
     return render(request, 'account/account.html', context=context)
-
-
 
 
 @login_required(login_url="/account/login")
@@ -48,7 +45,6 @@ def CartView(request):
         'total': round(sum(map(itemgetter('totalPrice'), cart_items)), 2),
         'xhr_url': reverse('cart_count')
     })
-    
     return render(request, "account/cart.html", context=context)
 
 
@@ -69,6 +65,7 @@ def LogInView(request):
     return render(request, 'account/login.html', context=context)
 
 
+@login_required(login_url="/account/login")
 def LogOutView(request):
     logout(request)
     return HttpResponseRedirect("/")
@@ -94,7 +91,8 @@ def RegisterView(request):
         'user': request.user,
         'form': form})
 
-    
+
+@login_required(login_url="/account/login") 
 def CartCountView(request):
     if request.method == 'GET':
         print(request.GET)
@@ -136,6 +134,7 @@ def CartCountView(request):
     })
 
 
+@login_required(login_url="/account/login")
 def orderView(request):
     form = OrderForm()
     context = base_context_genre(request)
@@ -153,16 +152,15 @@ def orderView(request):
         )})
         if 'create' in request.POST:
             form = OrderForm(request.POST)
-            print("BEFORE")
             order_id = create_order(request, form)
-            print("AFTER")
-            if order:
+            if order_id:
                 return HttpResponseRedirect(reverse('thanks')+f"?order={order_id}")
             context.update( {'message': {'text': 'Не удалось создать заказ! :(', 'type': 'error'}})
     context.update( {'form': form })
     return render(request, 'account/order.html', context=context)
 
 
+@login_required(login_url="/account/login")
 def thanksView(request):
     context=base_context_genre(request)
     order = request.GET.get('order')
